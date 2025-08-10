@@ -1,4 +1,4 @@
-<a href="https://www.youtube.com/@AlekseiArdilla">![imagen de portada Github](La_biblia_negra_del_Ethical_Hacking_PORTADA.jpg)</a>
+<a href="https://www.youtube.com/@AlekseiArdilla">![imagen de portada Github](portada_2da_opcion.jpg)</a>
 
 ## 📚 Índice Detallado
 
