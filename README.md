@@ -6,401 +6,930 @@
 *Tácticas ocultas de hackers, no apto para cardíacos* por **Alejandro G Vera**
 
 ---
-### Prólogo
-* Advertencia y responsabilidad legal
-* Filosofía del hacker ofensivo
-* Lo que no encontrarás en este libro
-* La delgada línea entre lo ético y lo ilegal
+## Índice Completo
+## Prólogo
 
-### Capítulo 1 – Entornos de Guerra Digital
-* Montando laboratorios aislados para pruebas ofensivas extremas
-* Principios del Laboratorio de Hacking Ético
-* Componentes Necesarios
-* Preparando la Infraestructura
-* Desplegando Máquinas Virtuales
-* Simulando una Empresa Real
-* Seguridad del Laboratorio
-* Ejemplo de Escenario Completo
-* Ejercicio Práctico - Comprobando la Red
-* Próximos Pasos
+Advertencia y responsabilidad legal
 
-### Capítulo 2 – Sistema de Herramientas Black-Hat
-* Compilación, personalización y ocultamiento de utilidades ofensivas
-* Clasificación del Arsenal Black-Hat
-* Compilando Herramientas desde el Código Fuente
-* Modificando Exploits Públicos
-* Creación de Payloads Personalizados con msfvenom
-* Ofuscación y Evasión de Antivirus
-* Scripts Portables para Ataques Rápidos
-* Gestión del Arsenal
-* Ejercicio Práctico - Kit de Ataque Express
-* Cierre
+Filosofía del hacker ofensivo
 
-### Capítulo 3 – Anonimato y Clandestinidad Digital
-* Ocultando tu rastro y moviéndote como un fantasma en la red
-* Fundamentos del anonimato
-* Infraestructura básica de anonimato
-* Uso de VPNs Multi-Hop
-* Cadenas de Proxys
-* Tor como Capa Extra
-* Túneles SSH Inversos
-* Fingerprinting y Defensa
-* Entornos Burner (desechables)
-* Ejercicio Práctico - Capa triple de anonimato
-* Precauciones Finales
+Lo que no encontrarás en este libro
 
-### Capítulo 4 – Reconocimiento Agresivo y Subterráneo
-* Mapeando el terreno antes del ataque y recolectando datos como un cazador digital
-* Tipos de Reconocimiento
-* Reconocimiento Pasivo - OSINT Extremo
-* Escaneo Activo - Mapeo de la Red
-* Fingerprinting de Servicios
-* Recolección de Subdominios
-* Escaneo de Vulnerabilidades en Web
-* Reconocimiento Subterráneo - Fuentes Filtradas
-* Uso de Shodan para loT y Servicios Expuestos
-* Combinación de Datos
-* Ejercicio Práctico - Recon total de un objetivo en laboratorio
-* Seguridad del Reconocimiento
-* Cierre
+La delgada línea entre lo ético y lo ilegal
 
-### Capítulo 5 – Explotación de Vulnerabilidades de Cero Días (Zero-Day)
-* El arte de atacar antes de que el mundo sepa que la falla existe
-* Ciclo de vida de un Zero-Day
-* Técnicas para Descubrir Zero-Days en Laboratorio
-* Creación de Exploits para 0-Day (Laboratorio)
-* Simulación de un 0-Day en un Servicio Web Vulnerable
-* Encadenando 0-Day con Post-Explotación
-* Ejemplo Completo de Laboratorio
-* Defensa contra 0-Day
-* Cierre
+## Capítulo 1 – Entornos de Guerra Digital
 
-### Capítulo 6 – Ataques de Ingeniería Social de Alto Impacto
-* Rompiendo la seguridad técnica a través de las debilidades humanas
-* Principios de la Ingeniería Social
-* Tipos Comunes de Ataques
-* Montando un Laboratorio de Ingeniería Social
-* Ejemplo 1 - Campaña de Phishing Controlado
-* Ejemplo 2 - Vishing (Simulación Telefónica)
-* Ejemplo 3 - Smishing
-* Ejemplo 4 - Baiting con Dispositivo USB
-* Ejemplo 5 - Pretexting Avanzado
-* Medidas Defensivas
-* Ejercicio Práctico - Simulación Completa
-* Cierre
+Montando laboratorios aislados para pruebas ofensivas extremas
 
-### Capítulo 7 – Pentesting Extremo
-* Llevando las pruebas de penetración al límite en entornos controlados
-* Metodología de Pentesting Extremo
-* Configuración de Laboratorio
-* Reconocimiento Agresivo
-* Explotación Encadenada
-* Escalada de Privilegios Creativa
-* Movimiento Lateral Masivo
-* Persistencia Multi-Capa
-* Ataques Destructivos en Laboratorio
-* Ejercicio Práctico Completo
-* Cierre
+Principios del Laboratorio de Hacking Ético
 
-### Capítulo 8 - Escalada de Privilegios Creativa
-* Transformando accesos limitados en control absoluto del sistema
-* Tipos de Escalada
-* Escalada en Windows
-* Escalada en Linux
-* Escalada en entornos mixtos
-* Creatividad en la Escalada
-* Ejercicio Práctico Completo
-* Medidas Defensivas
-* Cierre
+Componentes Necesarios
 
-### Capítulo 9 – Carding: Anatomía y Simulación en Laboratorio
-* Destripando el fraude con tarjetas para comprenderlo y prevenirlo
-* Anatomía de una Tarjeta
-* Generación de Datos Simulados
-* Escenario de Laboratorio
-* Skimming en Laboratorio
-* Captura en Tránsito (Man-in-the-Middle)
-* Validación de BIN y Luhn Check
-* Clonación Simulada
-* Uso Fraudulento Simulado
-* Detección y Prevención
-* Ejercicio Práctico Completo
-* Cierre
+Preparando la Infraestructura
 
-### Capítulo 10 – Mercados Negros y Transacciones Anónimas
-* Cómo operan las economías clandestinas digitales y cómo simularlas en un entorno seguro
-* Componentes de un Mercado Negro Digital
-* Simulación de un Mercado Negro en Laboratorio
-* Acceso a través de Tor
-* Transacciones con Criptomonedas de Prueba
-* Uso de Monero en Laboratorio
-* Sistema de Escrow Simulado
-* Seguridad del Mercado
-* Análisis Forense de un Mercado Negro Simulado
-* Ejercicio Práctico Completo
-* Riesgos Reales y Contramedidas
-* Cierre
+Desplegando Máquinas Virtuales
 
-### Capítulo 11 – Hombre en el Medio (MitM) al Límite
-* Interceptando, manipulando y explotando el tráfico como un depredador digital invisible
-* Tipos de MitM
-* Montando el Laboratorio
-* ARP Spoofing con Ettercap
-* DNS Spoofing
-* Manipulación de HTTP
-* SSL Strip - Downgrade de HTTPS
-* Intercepción con mitmproxy
-* Inyección de Scripts en Descargas
-* Captura de Credenciales
-* Ejercicio Práctico Completo
-* Detección y Contramedidas
-* Cierre
+Simulando una Empresa Real
 
-### Capítulo 12 - DoS y DDoS de Nivel Militar
-* Cómo saturar sistemas al punto de dejarlos sin aliento... y cómo defenderse de ello
-* Clasificación de Ataques
-* Laboratorio de Pruebas
-* Ataques Volumétricos
-* Ataques de Protocolo
-* Ataques a Nivel de Aplicación
-* Simulación de DDOS
-* Medición de Impacto
-* Defensas contra DoS/DDoS
-* Ejercicio Práctico Completo
-* Cierre
+Seguridad del Laboratorio
 
-### Capítulo 13 – Web Hacking sin Piedad
-* Tomando el control total de aplicaciones y servidores web sin dejar piedra sobre piedra
-* Principales Vectores de Ataque
-* Preparando el Laboratorio
-* SQL Injection (SQLi)
-* Cross-Site Scripting (XSS)
-* Command Injection
-* File Upload Vulnerability
-* Path Traversal
-* Enumeración de Directorios y Archivos
-* Escalada desde Web Shell a Control Total
-* Automatización de Ataques
-* Ejercicio Práctico Completo
-* Contramedidas
-* Cierre
+Ejemplo de Escenario Completo
 
-### Capítulo 14 – Wireless Hacking Avanzado
-* Rompiendo la seguridad de redes inalámbricas modernas con precisión quirúrgica
-* Herramientas y Hardware
-* Configuración del Laboratorio
-* Captura de Handshake WPA/WPA2
-* Crackeo de Contraseña
-* Ataques Evil Twin
-* WPA3 Cracking con Downgrade
-* Ataques WPS
-* Rogue AP + Captura de Credenciales
-* Ejercicio Práctico Completo
-* Medidas Defensivas
-* Cierre
+Ejercicio Práctico - Comprobando la Red
 
-### Capítulo 15 – Hacking con Dispositivos Móviles
-* Transformando smartphones en armas digitales y objetivos de alto valor
-* Escenarios de Ataque y Uso Ofensivo
-* Hacking con Android
-* Hacking con iOS
-* Comprometiendo Dispositivos Android
-* Comprometiendo Dispositivos iOS
-* Ataques vía Ingeniería Social
-* Ataques vía Red
-* Persistencia en Móviles
-* Ejercicio Práctico Completo
-* Medidas Defensivas
-* Cierre
+Próximos Pasos
 
-### Capítulo 16 – Clonación de SIM y Ataques IMSI Catcher
-* Interceptando y manipulando la identidad móvil como un operador encubierto
-* Anatomía de una Tarjeta SIM
-* Hardware y Software Necesario
-* Extracción de Datos de SIM
-* Clonación de SIM en Blanco
-* Introducción a IMSI Catchers
-* Montando un IMSI Catcher de Laboratorio
-* Ataques con IMSI Catcher
-* Ejercicio Práctico Completo
-* Contramedidas
-* Cierre
+## Capítulo 2 – Sistema de Herramientas Black-Hat
 
-### Capítulo 17 – Control Remoto de Dispositivos Móviles (Android e iOS)
-* Tomando el mando de un smartphone como si estuvieras en sus propios dedos
-* Escenarios de Uso en Laboratorio
-* Control Remoto en Android
-* Control Remoto en iOS
-* Persistencia en Dispositivos Móviles
-* Exfiltración de Datos
-* Ataques vía Ingeniería Social
-* Ejercicio Práctico Completo
-* Contramedidas
-* Cierre
+Compilación, personalización y ocultamiento de utilidades ofensivas
 
-### Capítulo 18 – Android como Plataforma de Ataque
-* Convertir un smartphone en un kit ofensivo portátil y autónomo
-* Preparación del Entorno
-* Instalando Kali NetHunter
-* Uso de Termux para Hacking
-* Escaneo de Redes desde Android
-* Hacking Wi-Fi desde Android
-* Ataques Web desde Android
-* Integración de SDR para Capturas de Radiofrecuencia
-* Uso de Android como Servidor C2 (Comando y Control)
-* Ejercicio Práctico Completo
-* Ventajas y Limitaciones
-* Medidas Defensivas
-* Cierre
+Clasificación del Arsenal Black-Hat
 
-### Capítulo 19 - Clonación de SIM: Escenarios Avanzados
-* Operaciones combinadas y persistencia en identidad móvil para entornos controlados
-* Escenarios de Laboratorio Avanzados
-* Hardware y Software
-* Clonación con Persistencia
-* Clonación + IMSI Catcher
-* Clonación Rotativa
-* Ejemplo Completo de Laboratorio
-* Uso de SDR para Análisis de Tráfico
-* Contramedidas Avanzadas
-* Ejercicio Práctico Completo
-* Cierre
+Compilando Herramientas desde el Código Fuente
 
-### Capítulo 20 – Hombre en el Medio en Redes Móviles
-* Interceptando y manipulando comunicaciones celulares en entornos controlados
-* Principios del MitM Celular
-* Requisitos del Laboratorio
-* Montando la BTS Falsa
-* Captura de IMSI y Autenticación
-* Downgrade de Cifrado
-* Interceptando Tráfico
-* Manipulación de Tráfico
-* MitM LTE y 5G
-* Ejercicio Práctico Completo
-* Contramedidas
-* Cierre
+Modificando Exploits Públicos
 
-### Capítulo 21 - Rootkits Invisibles
-* Control absoluto y sigiloso del sistema operativo
-* Tipos de Rootkits
-* Entorno de Laboratorio
-* Rootkit en Modo Usuario (Ejemplo en Python)
-* Rootkit en Modo Kernel (Linux)
-* Ocultando Procesos
-* Rootkit en Windows (Hooking DLL)
-* Persistencia
-* Ejercicio Práctico Completo
-* Detección y Eliminación
-* Cierre
+Creación de Payloads Personalizados con msfvenom
 
-### Capítulo 22 – Malware Fileless
-* El arte de atacar sin dejar huellas en disco
-* Características Clave
-* Entorno de Laboratorio
-* Ejemplo de Ataque Fileless con PowerShell
-* Fileless usando WMI (Windows Management Instrumentation)
-* Fileless en Linux (Bash + /dev/shm)
-* Técnicas de Entrega
-* Ejercicio Práctico Completo
-* Detección
-* Contramedidas
-* Cierre
+Ofuscación y Evasión de Antivirus
 
-### Capítulo 23 – Keyloggers Indetectables
-* La captura silenciosa de cada pulsación
-* Tipos de Keyloggers
-* Entorno de Laboratorio
-* Keylogger en Python (Windows)
-* Keylogger en Linux (C+X11)
-* Keylogger en Modo Kernel (Linux)
-* Persistencia Sigilosa
-* Exfiltración de Datos
-* Ejercicio Práctico Completo
-* Detección y Mitigación
-* Cierre
+Scripts Portables para Ataques Rápidos
 
-### Capítulo 24 – Ataques a Cadenas de Suministro (Supply Chain Attacks)
-* Comprometiendo el software y hardware antes de que llegue a su destino
-* Tipos de Ataques de Cadena de Suministro
-* Escenario de Laboratorio - Software
-* Escenario de Laboratorio - Hardware
-* Escenario de Laboratorio - Inyección en Pipeline CI/CD
-* Ejemplo Completo de Backdoor en Librería NPM
-* Persistencia y Evasión
-* Ejercicio Práctico Completo
-* Detección
-* Contramedidas
-* Cierre
+Gestión del Arsenal
 
-### Capítulo 25 – Exfiltración de Datos Encubierta
-* Sacando información sin levantar alarmas
-* Preparación del Laboratorio
-* Proceso General de Exfiltración
-* Método 1 - Exfiltración vía HTTP(S)
-* Método 2 - DNS Tunneling
-* Método 3 - ICMP (Ping) Tunneling
-* Método 4 - Esteganografía
-* Método 5 - Canales en Servicios Cloud
-* Ejercicio Práctico Completo
-* Detección
-* Contramedidas
-* Cierre
+Ejercicio Práctico - Kit de Ataque Express
 
-### Capítulo 26 – Hacking Físico y Seguridad de Acceso
-* Comprometiendo el mundo físico para abrir puertas digitales
-* Tipos de Objetivos en Hacking Físico
-* Herramientas Básicas de Laboratorio
-* Ataques a Cerraduras Mecánicas
-* Ataques a Cerraduras Electrónicas RFID/NFC
-* Ataques a Sistemas de Teclado Numérico
-* Ataques a Sistemas Biométricos
-* Ataques a Dispositivos Desatendidos
-* Ejemplo Completo de Laboratorio - Clonación RFID
-* Persistencia Física
-* Detección y Contramedidas
-* Cierre
+Cierre
 
-### Capítulo 27 – Ingeniería Social Avanzada
-* El arte de hackear la mente antes de hackear el sistema
-* Principios Psicológicos Fundamentales
-* Preparación de un Ataque de Ingeniería Social
-* Ejemplo de OSINT Automatizado
-* Técnicas de Ingeniería Social Avanzada
-* Escenario de Laboratorio - Spear Phishing
-* Escenario de Laboratorio - Pretexting Telefónico
-* Ejercicio Práctico Completo
-* Detección y Prevención
-* Cierre
+## Capítulo 3 – Anonimato y Clandestinidad Digital
 
-### Capítulo 28 – OSINT Avanzado
-* Inteligencia de fuentes abiertas para la caza digital
-* Ciclo de OSINT
-* Fuentes de OSINT
-* Herramientas de OSINT Avanzado
-* Ejemplo de Búsqueda Avanzada en Google (Google Dorks)
-* Ejemplo con theHarvester
-* Ejemplo con Shodan
-* OSINT en Redes Sociales
-* Extracción de Metadatos
-* Ejercicio Práctico Completo
-* Detección y Prevención
-* Cierre
+Ocultando tu rastro y moviéndote como un fantasma en la red
 
-### Capítulo 29 – Cierre, Despedida y Declaración Final
-* Reflexiones finales, responsabilidad y el verdadero sentido del hacking ético
-* El viaje que hemos hecho juntos
-* El propósito de este libro
-* Importancia del laboratorio controlado
-* Declaración y responsabilidad legal
-* Hacking ético vs. hacking criminal
-* La mentalidad correcta
-* Recomendaciones para seguir aprendiendo
-* El lado humano de la ciberseguridad
-* Mensaje final del autor
-* DISCLAIMER EXTENDIDO
+Fundamentos del anonimato
 
-### Epílogo
-* Para quienes caminan entre la luz y la sombra
+Infraestructura básica de anonimato
+
+Uso de VPNs Multi-Hop
+
+Cadenas de Proxys
+
+Tor como Capa Extra
+
+Túneles SSH Inversos
+
+Fingerprinting y Defensa
+
+Entornos Burner (desechables)
+
+Ejercicio Práctico - Capa triple de anonimato
+
+Precauciones Finales
+
+## Capítulo 4 – Reconocimiento Agresivo y Subterráneo
+
+Mapeando el terreno antes del ataque y recolectando datos como un cazador digital
+
+Tipos de Reconocimiento
+
+Reconocimiento Pasivo OSINT Extremo
+
+Escaneo Activo - Mapeo de la Red
+
+Fingerprinting de Servicios
+
+Recolección de Subdominios
+
+Escaneo de Vulnerabilidades en Web
+
+Reconocimiento Subterráneo - Fuentes Filtradas
+
+Uso de Shodan para loT y Servicios Expuestos
+
+Combinación de Datos
+
+Ejercicio Práctico - Recon total de un objetivo en laboratorio
+
+Seguridad del Reconocimiento
+
+Cierre
+
+## Capítulo 5 – Explotación de Vulnerabilidades de Cero Días (Zero-Day)
+
+El arte de atacar antes de que el mundo sepa que la falla existe
+
+Ciclo de vida de un Zero-Day
+
+Técnicas para Descubrir Zero-Days en Laboratorio
+
+Creación de Exploits para 0-Day (Laboratorio)
+
+Simulación de un 0-Day en un Servicio Web Vulnerable
+
+Encadenando 0-Day con Post-Explotación
+
+Ejemplo Completo de Laboratorio
+
+Defensa contra 0-Day
+
+Cierre
+
+## Capítulo 6 – Ataques de Ingeniería Social de Alto Impacto
+
+Rompiendo la seguridad técnica a través de las debilidades humanas
+
+Principios de la Ingeniería Social
+
+Tipos Comunes de Ataques
+
+Montando un Laboratorio de Ingeniería Social
+
+Ejemplo 1 - Campaña de Phishing Controlado
+
+Ejemplo 2 - Vishing (Simulación Telefónica)
+
+Ejemplo 3 - Smishing
+
+Ejemplo 4 - Baiting con Dispositivo USB
+
+Ejemplo 5 - Pretexting Avanzado
+
+Medidas Defensivas
+
+Ejercicio Práctico - Simulación Completa
+
+Cierre
+
+## Capítulo 7 – Pentesting Extremo
+
+Llevando las pruebas de penetración al límite en entornos controlados
+
+Metodología de Pentesting Extremo
+
+Configuración de Laboratorio
+
+Reconocimiento Agresivo
+
+Explotación Encadenada
+
+Escalada de Privilegios Creativa
+
+Movimiento Lateral Masivo
+
+Persistencia Multi-Capa
+
+Ataques Destructivos en Laboratorio
+
+Ejercicio Práctico Completo
+
+Cierre
+
+## Capítulo 8 – Escalada de Privilegios Creativa
+
+Transformando accesos limitados en control absoluto del sistema
+
+Tipos de Escalada
+
+Escalada en Windows
+
+Escalada en Linux
+
+Escalada en entornos mixtos
+
+Creatividad en la Escalada
+
+Ejercicio Práctico Completo
+
+Medidas Defensivas
+
+Cierre
+
+## Capítulo 9 – Carding: Anatomía y Simulación en Laboratorio
+
+Destripando el fraude con tarjetas para comprenderlo y prevenirlo
+
+Anatomía de una Tarjeta
+
+Generación de Datos Simulados
+
+Escenario de Laboratorio
+
+Skimming en Laboratorio
+
+Captura en Tránsito (Man-in-the-Middle)
+
+Validación de BIN y Luhn Check
+
+Clonación Simulada
+
+Uso Fraudulento Simulado
+
+Detección y Prevención
+
+Ejercicio Práctico Completo
+
+Cierre
+
+## Capítulo 10 – Mercados Negros y Transacciones Anónimas
+
+Cómo operan las economías clandestinas digitales y cómo simularlas en un entorno seguro
+
+Componentes de un Mercado Negro Digital
+
+Simulación de un Mercado Negro en Laboratorio
+
+Acceso a través de Tor
+
+Transacciones con Criptomonedas de Prueba
+
+Uso de Monero en Laboratorio
+
+Sistema de Escrow Simulado
+
+Seguridad del Mercado
+
+Análisis Forense de un Mercado Negro Simulado
+
+Ejercicio Práctico Completo
+
+Riesgos Reales y Contramedidas
+
+Cierre
+
+## Capítulo 11 – Hombre en el Medio (MitM) al Límite
+
+Interceptando, manipulando y explotando el tráfico como un depredador digital invisible
+
+Tipos de MitM
+
+Montando el Laboratorio
+
+ARP Spoofing con Ettercap
+
+DNS Spoofing
+
+Manipulación de HTTP
+
+SSL Strip - Downgrade de HTTPS
+
+Intercepción con mitmproxy
+
+Inyección de Scripts en Descargas
+
+Captura de Credenciales
+
+Ejercicio Práctico Completo
+
+Detección y Contramedidas
+
+Cierre
+
+## Capítulo 12 – DoS y DDoS de Nivel Militar
+
+Cómo saturar sistemas al punto de dejarlos sin aliento... y cómo defenderse de ello
+
+Clasificación de Ataques
+
+Laboratorio de Pruebas
+
+Ataques Volumétricos
+
+Ataques de Protocolo
+
+Ataques a Nivel de Aplicación
+
+Simulación de DDOS
+
+Medición de Impacto
+
+Defensas contra DoS/DDoS
+
+Ejercicio Práctico Completo
+
+Cierre
+
+## Capítulo 13 – Web Hacking sin Piedad
+
+Tomando el control total de aplicaciones y servidores web sin dejar piedra sobre piedra
+
+Principales Vectores de Ataque
+
+Preparando el Laboratorio
+
+SQL Injection (SQLi)
+
+Cross-Site Scripting (XSS)
+
+Command Injection
+
+File Upload Vulnerability
+
+Path Traversal
+
+Enumeración de Directorios y Archivos
+
+Escalada desde Web Shell a Control Total
+
+Automatización de Ataques
+
+Ejercicio Práctico Completo
+
+Contramedidas
+
+Cierre
+
+## Capítulo 14 – Wireless Hacking Avanzado
+
+Rompiendo la seguridad de redes inalámbricas modernas con precisión quirúrgica
+
+Herramientas y Hardware
+
+Configuración del Laboratorio
+
+Captura de Handshake WPA/WPA2
+
+Crackeo de Contraseña
+
+Ataques Evil Twin
+
+WPA3 Cracking con Downgrade
+
+Ataques WPS
+
+Rogue AP + Captura de Credenciales
+
+Ejercicio Práctico Completo
+
+Medidas Defensivas
+
+Cierre
+
+## Capítulo 15 – Hacking con Dispositivos Móviles
+
+Transformando smartphones en armas digitales y objetivos de alto valor
+
+Escenarios de Ataque y Uso Ofensivo
+
+Hacking con Android
+
+Hacking con iOS
+
+Comprometiendo Dispositivos Android
+
+Comprometiendo Dispositivos iOS
+
+Ataques vía Ingeniería Social
+
+Ataques vía Red
+
+Persistencia en Móviles
+
+Ejercicio Práctico Completo
+
+Medidas Defensivas
+
+Cierre
+
+## Capítulo 16 – Clonación de SIM y Ataques IMSI Catcher
+
+Interceptando y manipulando la identidad móvil como un operador encubierto
+
+Anatomía de una Tarjeta SIM
+
+Hardware y Software Necesario
+
+Extracción de Datos de SIM
+
+Clonación de SIM en Blanco
+
+Introducción a IMSI Catchers
+
+Montando un IMSI Catcher de Laboratorio
+
+Ataques con IMSI Catcher
+
+Ejercicio Práctico Completo
+
+Contramedidas
+
+Cierre
+
+## Capítulo 17 – Control Remoto de Dispositivos Móviles (Android e iOS)
+
+Tomando el mando de un smartphone como si estuvieras en sus propios dedos
+
+Escenarios de Uso en Laboratorio
+
+Control Remoto en Android
+
+Control Remoto en iOS
+
+Persistencia en Dispositivos Móviles
+
+Exfiltración de Datos
+
+Ataques vía Ingeniería Social
+
+Ejercicio Práctico Completo
+
+Contramedidas
+
+Cierre
+
+## Capítulo 18 – Android como Plataforma de Ataque
+
+Convertir un smartphone en un kit ofensivo portátil y autónomo
+
+Preparación del Entorno
+
+Instalando Kali NetHunter
+
+Uso de Termux para Hacking
+
+Escaneo de Redes desde Android
+
+Hacking Wi-Fi desde Android
+
+Ataques Web desde Android
+
+Integración de SDR para Capturas de Radiofrecuencia
+
+Uso de Android como Servidor C2 (Comando y Control)
+
+Ejercicio Práctico Completo
+
+Ventajas y Limitaciones
+
+Medidas Defensivas
+
+Cierre
+
+## Capítulo 19 – Clonación de SIM: Escenarios Avanzados
+
+Operaciones combinadas y persistencia en identidad móvil para entornos controlados
+
+Escenarios de Laboratorio Avanzados
+
+Hardware y Software
+
+Clonación con Persistencia
+
+Clonación + IMSI Catcher
+
+Clonación Rotativa
+
+Ejemplo Completo de Laboratorio
+
+Uso de SDR para Análisis de Tráfico
+
+Contramedidas Avanzadas
+
+Ejercicio Práctico Completo
+
+Cierre
+
+## Capítulo 20 – Hombre en el Medio en Redes Móviles
+
+Interceptando y manipulando comunicaciones celulares en entornos controlados
+
+Principios del MitM Celular
+
+Requisitos del Laboratorio
+
+Montando la BTS Falsa
+
+Captura de IMSI y Autenticación
+
+Downgrade de Cifrado
+
+Interceptando Tráfico
+
+Manipulación de Tráfico
+
+MitM LTE y 5G
+
+Ejercicio Práctico Completo
+
+Contramedidas
+
+Cierre
+
+## Capítulo 21 – Rootkits Invisibles
+
+Control absoluto y sigiloso del sistema operativo
+
+Tipos de Rootkits
+
+Entorno de Laboratorio
+
+Rootkit en Modo Usuario (Ejemplo en Python)
+
+Rootkit en Modo Kernel (Linux)
+
+Ocultando Procesos
+
+Rootkit en Windows (Hooking DLL)
+
+Persistencia
+
+Ejercicio Práctico Completo
+
+Detección y Eliminación
+
+Cierre
+
+## Capítulo 22 – Malware Fileless
+
+El arte de atacar sin dejar huellas en disco
+
+Características Clave
+
+Entorno de Laboratorio
+
+Ejemplo de Ataque Fileless con PowerShell
+
+Fileless usando WMI (Windows Management Instrumentation)
+
+Fileless en Linux (Bash + /dev/shm)
+
+Técnicas de Entrega
+
+Ejercicio Práctico Completo
+
+Detección
+
+Contramedidas
+
+Cierre
+
+## Capítulo 23 – Keyloggers Indetectables
+
+La captura silenciosa de cada pulsación
+
+Tipos de Keyloggers
+
+Entorno de Laboratorio
+
+Keylogger en Python (Windows)
+
+Keylogger en Linux (C+X11)
+
+Keylogger en Modo Kernel (Linux)
+
+Persistencia Sigilosa
+
+Exfiltración de Datos
+
+Ejercicio Práctico Completo
+
+Detección y Mitigación
+
+Cierre
+
+## Capítulo 24 – Ataques a Cadenas de Suministro (Supply Chain Attacks)
+
+Comprometiendo el software y hardware antes de que llegue a su destino
+
+Tipos de Ataques de Cadena de Suministro
+
+Escenario de Laboratorio - Software
+
+Escenario de Laboratorio - Hardware
+
+Escenario de Laboratorio - Inyección en Pipeline CI/CD
+
+Ejemplo Completo de Backdoor en Librería NPM
+
+Persistencia y Evasión
+
+Ejercicio Práctico Completo
+
+Detección
+
+Contramedidas
+
+Cierre
+
+## Capítulo 25 – Exfiltración de Datos Encubierta
+
+Sacando información sin levantar alarmas
+
+Preparación del Laboratorio
+
+Proceso General de Exfiltración
+
+Método 1 - Exfiltración vía HTTP(S)
+
+Método 2 - DNS Tunneling
+
+Método 3 – ICMP (Ping) Tunneling
+
+Método 4 - Esteganografía
+
+Método 5 - Canales en Servicios Cloud
+
+Ejercicio Práctico Completo
+
+Detección
+
+Contramedidas
+
+Cierre
+
+## Capítulo 26 – Hacking Físico y Seguridad de Acceso
+
+Comprometiendo el mundo físico para abrir puertas digitales
+
+Tipos de Objetivos en Hacking Físico
+
+Herramientas Básicas de Laboratorio
+
+Ataques a Cerraduras Mecánicas
+
+Ataques a Cerraduras Electrónicas RFID/NFC
+
+Ataques a Sistemas de Teclado Numérico
+
+Ataques a Sistemas Biométricos
+
+Ataques a Dispositivos Desatendidos
+
+Ejemplo Completo de Laboratorio - Clonación RFID
+
+Persistencia Física
+
+Detección y Contramedidas
+
+Cierre
+
+## Capítulo 27 – Ingeniería Social Avanzada
+
+El arte de hackear la mente antes de hackear el sistema
+
+Principios Psicológicos Fundamentales
+
+Preparación de un Ataque de Ingeniería Social
+
+Ejemplo de OSINT Automatizado
+
+Técnicas de Ingeniería Social Avanzada
+
+Escenario de Laboratorio - Spear Phishing
+
+Escenario de Laboratorio - Pretexting Telefónico
+
+Ejercicio Práctico Completo
+
+Detección y Prevención
+
+Cierre
+
+## Capítulo 28 – OSINT Avanzado
+
+Inteligencia de fuentes abiertas para la caza digital
+
+Ciclo de OSINT
+
+Fuentes de OSINT
+
+Herramientas de OSINT Avanzado
+
+Ejemplo de Búsqueda Avanzada en Google (Google Dorks)
+
+Ejemplo con theHarvester
+
+Ejemplo con Shodan
+
+OSINT en Redes Sociales
+
+Extracción de Metadatos
+
+Ejercicio Práctico Completo
+
+Detección y Prevención
+
+Cierre
+
+## Capítulo 29 – Ataques a APIs y Microservicios
+
+Explotando el esqueleto invisible de las aplicaciones modernas
+
+Arquitectura Básica de APIs y Microservicios
+
+Principales Vulnerabilidades según OWASP API Security Top 10
+
+Laboratorio – API BOLA (Broken Object Level Authorization)
+
+Laboratorio – Inyección SQL en API
+
+Laboratorio – Exposición de Datos
+
+Laboratorio – Abuso de Rate Limit
+
+Ataques a Microservicios Internos
+
+Ejercicio Práctico Completo
+
+Detección y Defensa
+
+Cierre
+
+## Capítulo 30 – Red Teaming Avanzado
+
+Operaciones ofensivas integrales para medir la defensa real
+
+Roles Clave en una Operación Red Team
+
+Fases del Red Teaming Avanzado
+
+Laboratorio de Red Teaming – Escenario Completo
+
+Herramientas Clave en Red Teaming
+
+Simulación de Blue Team
+
+Métricas para Medir Éxito
+
+Ejercicio Práctico Completo
+
+Detección y Defensa
+
+Cierre
+
+## Capítulo 31 – Hacking de Infraestructura Crítica
+
+ICS, SCADA y redes industriales: cuando un exploit apaga una ciudad
+
+Arquitectura de un Sistema Industrial
+
+Protocolos Industriales y Riesgos
+
+Fases de un Ataque ICS/SCADA
+
+Laboratorio – Descubrimiento de Dispositivos Industriales con Shodan
+
+Laboratorio – Interacción con Modbus
+
+Escenario de Intrusión ICS
+
+Ataques Avanzados
+
+Ejercicio Completo de Laboratorio ICS
+
+Contramedidas y Defensa
+
+Cierre
+
+## Capítulo 32 – Hacking con Drones y Dispositivos Autónomos
+
+Tomando el control del cielo y la tierra sin poner un pie en el objetivo
+
+Principales Superficies de Ataque
+
+Protocolos Comunes y Riesgos
+
+Laboratorio – Interceptación de MAVLink
+
+GPS Spoofing
+
+Hacking de Aplicaciones de Control
+
+Ejemplo de Ataque Wi-Fi
+
+Escenario de Intrusión Completo
+
+Hacking de Robots y Vehículos Autónomos
+
+Ejercicio Completo de Laboratorio
+
+Contramedidas
+
+Cierre
+
+## Capítulo 33 – Explotación de IoT Masivo
+
+Cuando miles de dispositivos inteligentes se convierten en un ejército
+
+Superficie de Ataque IoT
+
+Reconocimiento Masivo
+
+Escaneo y Enumeración Masiva
+
+Explotación de Credenciales por Defecto
+
+Acceso a Streams de Cámaras IP
+
+Inyección en Paneles Web IoT
+
+Escenario de Botnet IoT en Laboratorio
+
+Laboratorio – Propagación Automática
+
+Explotación de MQTT
+
+Defensa Contra Explotación IoT Masiva
+
+Cierre
+
+## Capítulo 34 – Ingeniería Social Avanzada
+
+El arte de hackear personas antes que máquinas
+
+Principios Psicológicos que Aprovecha la Ingeniería Social
+
+Tipos Avanzados de Ingeniería Social
+
+Escenarios Combinados
+
+Laboratorio – Spear Phishing Personalizado
+
+Laboratorio – Pretexting Telefónico
+
+Laboratorio – Ingreso Físico con Ingeniería Social
+
+Ataques de Ingeniería Social en Redes Sociales
+
+Ejercicio Completo – Campaña de Ingeniería Social
+
+Contramedidas y Defensa
+
+Cierre
+
+## Capítulo 35 – Hacking de Redes 5G y Comunicaciones Avanzadas
+
+Explotando la columna vertebral de la hiperconectividad moderna
+
+Arquitectura 5G en Breve
+
+Superficies de Ataque Clave
+
+Vulnerabilidades Históricas y Actualizadas
+
+Laboratorio – IMSI Catching con Software Defined Radio (SDR)
+
+Ataques de Fuzzing al Plano de Control
+
+Interceptación de Tráfico en 5G NSA
+
+Escenario Completo – Compromiso de Red 5G
+
+Ataques a APIs 5G
+
+Laboratorio – Ataque al Core 5G Virtualizado
+
+Contramedidas y Defensa
+
+Cierre
+
+## Capítulo 36 – Deepfakes y Manipulación Multimedia para Operaciones de Ingeniería Social
+
+Hackeando la percepción humana para abrir puertas digitales y físicas
+
+Tipos de Deepfakes y Manipulación Multimedia
+
+Herramientas Comunes
+
+Laboratorio – Creación de Deepfake de Rostro
+
+Laboratorio – Clonado de Voz
+
+Escenario de Phishing con Deepfake
+
+Deepfakes en Videollamadas en Tiempo Real
+
+Ejercicio Completo – Operación de Ingeniería Social con Deepfake
+
+Técnicas de Defensa
+
+Cierre
+
+## Capítulo 37 – Cierre, Despedida y Declaración Final
+
+Reflexiones finales, responsabilidad y el verdadero sentido del hacking ético
+
+El viaje que hemos hecho juntos
+
+El propósito de este libro
+
+Importancia del laboratorio controlado
+
+Declaración y responsabilidad legal
+
+Hacking ético vs. hacking criminal
+
+La mentalidad correcta
+
+Recomendaciones para seguir aprendiendo
+
+El lado humano de la ciberseguridad
+
+Mensaje final del autor
+
+## DISCLAIMER EXTENDIDO
+
+## Epílogo
+
+Para quienes caminan entre la luz y la sombra
 
 ---
 ## **Prólogo**
