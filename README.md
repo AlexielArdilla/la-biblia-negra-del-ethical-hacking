@@ -7210,7 +7210,7 @@ El día que uses todo lo aprendido para salvar a alguien de un desastre digital,
 
 ### Alejandro G Vera, Experto Universitario enn Ethical Hacking (UTN)
 
-## ¿Quieres el PDF? [`La_biblia_negra_del_Ethical_Hacking.pdf`](La_biblia_negra_del_Ethical_Hacking.pdf)
+## ¿Quieres el PDF? [`La_biblia_negra_del_Ethical_Hackingv0.3_final.pdf`](La_biblia_negra_del_Ethical_Hackingv0.3_final.pdf)
 
 
 
